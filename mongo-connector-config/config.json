@@ -1,0 +1,16 @@
+{
+	"name": "mongo-sink",
+	"config": {
+        "topics": "tsl-monitor-timings",
+        "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+        "tasks.max": "1",
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false",
+        "connection.uri": "mongodb://root:BGT@mongodb:27017/",
+        "database": "tsl",
+        "collection": "timings",
+        "JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS": "allow"
+    }
+}

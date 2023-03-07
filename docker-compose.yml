@@ -16,6 +16,8 @@ services:
     hostname: mongodb
     image: mongo
     restart: always
+    ports:
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: BGT
@@ -38,12 +40,11 @@ services:
       - mongo
   
   connect:
-    image: cnfldemos/kafka-connect-datagen:0.6.0-7.3.0
+    image: confluentinc/cp-kafka-connect
     hostname: connect
     container_name: connect
-    ports:
-      - "8083:8083"
     environment:
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
       CONNECT_BOOTSTRAP_SERVERS: 'kafka:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
       CONNECT_GROUP_ID: compose-connect-group
@@ -56,17 +57,14 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
-      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+      # CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      # CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+
+    ports:
+      - "8083:8083"
     volumes:
       - ./mongodb-kafka-connect-mongodb-1.9.1:/usr/share/confluent-hub-components/mongodb-kafka-connect-mongodb-1.9.1
     networks:
       - kafka
       - mongo
-    command:
-      - bash
-      - -c
-      - |
-        confluent-hub install --no-prompt /usr/share/confluent-hub-components/mongodb-kafka-connect-mongodb-1.9.1
-        /etc/confluent/docker/run
+      

@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "1661239f-b9ea-4046-9e27-308d99e9c8eb",
+		"name": "BGT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Connect-mongo-startup",
+			"item": [
+				{
+					"name": "get connectors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/connectors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "creat mongo connector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"mongo-sink\",\r\n\t\"config\": {\r\n        \"topics\": \"tsl-monitor-timings\",\r\n        \"connector.class\": \"com.mongodb.kafka.connect.MongoSinkConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\r\n        \"key.converter.schemas.enable\": \"false\",\r\n        \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n        \"value.converter.schemas.enable\": \"false\",\r\n        \"connection.uri\": \"mongodb://root:BGT@mongodb:27017/\",\r\n        \"database\": \"tsl\",\r\n        \"collection\": \"timings\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8083/connectors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
