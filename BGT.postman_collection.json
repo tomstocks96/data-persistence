@@ -9,52 +9,104 @@
 			"name": "Connect-mongo-startup",
 			"item": [
 				{
-					"name": "get connectors",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8083/connectors",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"connectors"
-							]
+					"name": "List Connectors",
+					"item": [
+						{
+							"name": "get connectors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8083/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "creat mongo connector",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"name\": \"mongo-sink\",\r\n\t\"config\": {\r\n        \"topics\": \"tsl-monitor-timings\",\r\n        \"connector.class\": \"com.mongodb.kafka.connect.MongoSinkConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\r\n        \"key.converter.schemas.enable\": \"false\",\r\n        \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n        \"value.converter.schemas.enable\": \"false\",\r\n        \"connection.uri\": \"mongodb://root:BGT@mongodb:27017/\",\r\n        \"database\": \"tsl\",\r\n        \"collection\": \"timings\"\r\n    }\r\n}"
+					"name": "Create Connectors",
+					"item": [
+						{
+							"name": "creat mongo connector",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"mongo-sink\",\r\n\t\"config\": {\r\n        \"topics\": \"tsl-monitor-timings\",\r\n        \"connector.class\": \"com.mongodb.kafka.connect.MongoSinkConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\r\n        \"key.converter.schemas.enable\": \"false\",\r\n        \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n        \"value.converter.schemas.enable\": \"false\",\r\n        \"connection.uri\": \"mongodb://root:BGT@mongodb:27017/\",\r\n        \"database\": \"tsl\",\r\n        \"collection\": \"timings\"\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8083/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8083/connectors",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8083",
-							"path": [
-								"connectors"
-							]
+						{
+							"name": "creat mongo laps connector",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"mongo-tsl-laps-sink\",\r\n\t\"config\": {\r\n        \"topics\": \"tsl-monitor-timings\",\r\n        \"connector.class\": \"com.mongodb.kafka.connect.MongoSinkConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\r\n        \"key.converter.schemas.enable\": \"false\",\r\n        \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n        \"value.converter.schemas.enable\": \"false\",\r\n        \"connection.uri\": \"mongodb://root:BGT@mongodb:27017/\",\r\n        \"database\": \"tsl\",\r\n        \"collection\": \"laps\",\r\n        \"JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS\": \"allow\",\r\n        \"document.id.strategy\":\"com.mongodb.kafka.connect.sink.processor.id.strategy.PartialValueStrategy\",\r\n        \"document.id.strategy.partial.value.projection.list\":\"series,session,No,Laps\",\r\n        \"document.id.strategy.partial.value.projection.type\":\"AllowList\",\r\n        \"writemodel.strategy\":\"com.mongodb.kafka.connect.sink.writemodel.strategy.ReplaceOneBusinessKeyStrategy\"\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8083/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "Delete Connectors",
+					"item": [
+						{
+							"name": "Delete old connectors",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

@@ -1,5 +1,5 @@
 {
-	"name": "mongo-sink",
+	"name": "mongo-tsl-laps-sink",
 	"config": {
         "topics": "tsl-monitor-timings",
         "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
@@ -10,7 +10,11 @@
         "value.converter.schemas.enable": "false",
         "connection.uri": "mongodb://root:BGT@mongodb:27017/",
         "database": "tsl",
-        "collection": "timings",
-        "JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS": "allow"
+        "collection": "laps",
+        "JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS": "allow",
+        "document.id.strategy":"com.mongodb.kafka.connect.sink.processor.id.strategy.PartialValueStrategy",
+        "document.id.strategy.partial.value.projection.list":"series,session,No,Laps",
+        "document.id.strategy.partial.value.projection.type":"AllowList",
+        "writemodel.strategy":"com.mongodb.kafka.connect.sink.writemodel.strategy.ReplaceOneBusinessKeyStrategy"
     }
 }
